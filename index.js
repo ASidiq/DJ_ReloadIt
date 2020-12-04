@@ -1,14 +1,14 @@
-// require the Commando module
+// require the Commando module (using deconstruction)
 const { CommandoClient } = require('discord.js-commando');
 // require the path module
 const path = require('path');
 // require the config file
-const config = require('./config.json');
+const { prefix, ownerID, token } = require('./config.json');
 
 // create a new CommandoClient
 const client = new CommandoClient({
-	commandPrefix: config.prefix,
-	owner: config.ownerID,
+	commandPrefix: prefix,
+	owner: ownerID,
 	invite: 'https://discord.gg/bRCvFy9',
 });
 
@@ -33,4 +33,12 @@ client.once('ready', () => {
 client.on('error', console.error);
 
 // login to Discord with your app's token
-client.login(config.token);
+client.login(token);
+
+client.on('message', message => {
+	console.log(message.content);
+	if (message.content === `${token}ping`) {
+		// send back "Pong." to the channel the message was sent in
+		message.channel.send('Pong!');
+	}
+});
