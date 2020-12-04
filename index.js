@@ -15,7 +15,7 @@ const client = new CommandoClient({
 client.registry
 	.registerDefaultTypes()
 	.registerGroups([
-		['actions', 'Your Actions Command Group'],
+		['music_commands', 'Your Actions Command Group'],
 		// ['second', 'Your Second Command Group'],
 	])
 	.registerDefaultGroups()
