@@ -1,0 +1,9 @@
+# ignore files and folders
+config.json 
+/.vscode
+# No need to have the folder with my packages on GitHub. Reduce project file size.
+node_modules/
+
+
+package-lock.json
+npm-debug.log
