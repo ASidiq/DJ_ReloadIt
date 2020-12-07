@@ -19,7 +19,12 @@ client.registry
 		// ['second', 'Your Second Command Group'],
 	])
 	.registerDefaultGroups()
-	.registerDefaultCommands()
+	.registerDefaultCommands({
+		help:true,
+		prefix:true,
+		eval:true,
+		ping:true,
+	})
 	.registerCommandsIn(path.join(__dirname, 'commands'));
 
 // when the client is ready, run this code
