@@ -42,10 +42,3 @@ client.on('error', console.error);
 // login to Discord with your app's token
 client.login(token);
 
-// client.on('message', message => {
-// 	console.log(message.content);
-// 	if (message.content === `${token}ping`) {
-// 		// send back "Pong." to the channel the message was sent in
-// 		message.channel.send('Pong!');
-// 	}
-// });
