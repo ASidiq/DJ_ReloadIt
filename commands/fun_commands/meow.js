@@ -16,6 +16,12 @@ module.exports = class MeowCommand extends Command {
 			memberName: 'meow',
 			// Help text displayed when the help command is used
 			description: 'Replies with a meow, kitty cat.',
+			// Throttling allows command to be used only in a certain period of time
+			throttling: {
+				usages: 2,
+				duration: 10,
+				// meow will be limited to twice in a 10second period per user
+			},
 		});
 	}
 	// run method contains the code that is executed when the meow command is used
