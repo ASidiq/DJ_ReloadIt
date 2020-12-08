@@ -18,6 +18,8 @@ module.exports = class SayCommand extends Command {
 					// type is the type the argument is a part of e.g. string, integer,
 					// user, member, etc.
 					type:'string',
+					// checks if the length of this argument is below 201 characters
+					validate: text => text.length < 201,
 				},
 				{
 					key: 'otherThing',
