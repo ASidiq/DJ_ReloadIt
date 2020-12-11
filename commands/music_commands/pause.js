@@ -18,7 +18,7 @@ module.exports = class PauseMusic extends Command {
 					// connection returns a VoiceConnection and dispatcher returns a StreamDispatcher
 					connection.dispatcher.pause([true]);
 					// Types: PLAYING, WATCHING, LISTENING, STREAMING,
-					this.client.user.setActivity('Paused...', { type: 'PLAYING' });
+					this.client.user.setActivity('Music Paused...');
 				});
 		}
 		else {
