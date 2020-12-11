@@ -6,7 +6,7 @@ module.exports = class PlayMusic extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'play',
-			aliases: ['play-music', 'play-song' ],
+			aliases: ['play-music', 'play-song'],
 			group: 'music_commands',
 			memberName: 'play',
 			description: 'Plays the music.',
@@ -35,11 +35,14 @@ module.exports = class PlayMusic extends Command {
 		// themselves
 		if (message.member.voice.channel) {
 			message.member.voice.channel.join()
+			// connection returns a VoiceConnection
 				.then(connection => {
+					// play method returns a StreamDispatcher
 					const dispatcher = connection.play(ytdl(song,
 						{ filter: 'audioonly', quality: 'highestaudio' }));
 					dispatcher.setVolume(0.1);
 					ytdl.getBasicInfo(song).then(info => {
+						// Types: PLAYING, WATCHING, LISTENING, STREAMING,
 						this.client.user.setActivity(info.videoDetails.title, { type: 'PLAYING' });
 					});
 				});
