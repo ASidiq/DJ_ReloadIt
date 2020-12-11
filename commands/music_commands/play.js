@@ -2,8 +2,6 @@ const { Command } = require('discord.js-commando');
 const ytdl = require('ytdl-core');
 
 
-// const bot = new CommandoClient();
-
 module.exports = class PlayMusic extends Command {
 	constructor(client) {
 		super(client, {
@@ -41,7 +39,9 @@ module.exports = class PlayMusic extends Command {
 					const dispatcher = connection.play(ytdl(song,
 						{ filter: 'audioonly', quality: 'highestaudio' }));
 					dispatcher.setVolume(0.1);
-					connection.setSpeaking();
+					ytdl.getBasicInfo(song).then(info => {
+						this.client.user.setActivity(info.videoDetails.title, { type: 'PLAYING' });
+					});
 				});
 		}
 		else {
