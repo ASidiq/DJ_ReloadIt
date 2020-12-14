@@ -22,7 +22,7 @@ module.exports = class PauseMusic extends Command {
 				message.member.voice.channel.join()
 					.then(connection => {
 						// connection returns a VoiceConnection and dispatcher returns a StreamDispatcher
-						connection.dispatcher.pause([true]);
+						connection.dispatcher.pause({ value: true });
 						// Types: PLAYING, WATCHING, LISTENING, STREAMING,
 						this.client.user.setActivity('Music Paused...');
 					});
