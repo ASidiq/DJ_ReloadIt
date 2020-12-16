@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const ytdl = require('ytdl-core');
+// imports database model into script
 const Track = require(`${__basedir}/models/track.js`);
 
 
@@ -46,8 +47,8 @@ module.exports = class PlayMusic extends Command {
 					ytdl.getBasicInfo(song).then(info => {
 						// Types: PLAYING, WATCHING, LISTENING, STREAMING,
 						this.client.user.setActivity(info.videoDetails.title, { type: 'PLAYING' });
-						// saves the title of the song in a file so it can be retrieved when the song is paused and then resumed again
-						saveFile(message, info.videoDetails.title);
+						// saves the title of the song in a mongodb database so it can be retrieved when the song is paused and then resumed again
+						storeBotActivity(message, info.videoDetails.title);
 					});
 				});
 		}
@@ -57,10 +58,19 @@ module.exports = class PlayMusic extends Command {
 	}
 };
 
-function saveFile(message, content) {
+// Function stores bot activity
+function storeBotActivity(message, content) {
+	// uses condition (server/guild id) to determine where to store bot activity
 	const condition = { _id: message.guild.id };
+
+	// update activity with content
 	const update = { track: content };
+
+	// options to pass to method
 	const options = { new: true, upsert: true, timestamps: true, runValidators:true };
+
+	// Using database Model ("Track" in this case) and not instance of the model,
+	// method searches database using condition and update data. if not adds it to db.
 	Track.findOneAndUpdate(condition, update, options, function(result, err) {
 		if (err) {
 			console.log(err);
