@@ -1,7 +1,6 @@
 const { Command } = require('discord.js-commando');
 const ytdl = require('ytdl-core');
-const fs = require('fs');
-const directory = 'C:/Users/ASidiq_ph1/Desktop/Personal Learning/DJ_ReloadIt/song_file.json';
+const Track = require(`${__basedir}/models/track.js`);
 
 
 module.exports = class PlayMusic extends Command {
@@ -48,7 +47,7 @@ module.exports = class PlayMusic extends Command {
 						// Types: PLAYING, WATCHING, LISTENING, STREAMING,
 						this.client.user.setActivity(info.videoDetails.title, { type: 'PLAYING' });
 						// saves the title of the song in a file so it can be retrieved when the song is paused and then resumed again
-						saveFile(info.videoDetails.title);
+						saveFile(message, info.videoDetails.title);
 					});
 				});
 		}
@@ -58,20 +57,16 @@ module.exports = class PlayMusic extends Command {
 	}
 };
 
-function saveFile(content) {
-	// Creating JSON object
-	const songTitle = {
-		'title': content,
-	};
-
-	try{
-		// convert JSON object to a string
-		const data = JSON.stringify(songTitle, null, 4);
-
-		// write file to disk
-		fs.writeFileSync(directory, data, 'utf8');
-	}
-	catch (err) {
-		console.log(`Error writing file: ${err}`);
-	}
+function saveFile(message, content) {
+	const condition = { _id: message.guild.id };
+	const update = { track: content };
+	const options = { new: true, upsert: true, timestamps: true, runValidators:true };
+	Track.findOneAndUpdate(condition, update, options, function(result, err) {
+		if (err) {
+			console.log(err);
+		}
+		else{
+			console.log(result, '/n collection updated!');
+		}
+	});
 }
