@@ -1,9 +1,20 @@
+// global variable that is accessible throughout the project files
+global.__basedir = __dirname;
+
 // require the Commando module (using deconstruction)
 const { CommandoClient } = require('discord.js-commando');
 // require the path module
 const path = require('path');
 // require the config file
-const { prefix, ownerID, token } = require('./config.json');
+const { prefix, ownerID, token, dbUsername, dbPassword } = require('./config.json');
+// require mongoose package
+const mongoose = require('mongoose');
+
+// connect to the mongodb database. Supplied options to prevent deprecation warnings on execution
+mongoose.connect(`mongodb+srv://${dbUsername}:${dbPassword}@discord-dj-bot-db.ly5g7.mongodb.net/discord-dj-bot`,
+	{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+	.then((result) => console.log('connected to db'))
+	.catch((err) => console.log(err));
 
 // create a new CommandoClient
 const client = new CommandoClient({
@@ -12,6 +23,7 @@ const client = new CommandoClient({
 	invite: 'https://discord.gg/bRCvFy9',
 });
 
+// command handler
 client.registry
 	.registerDefaultTypes()
 	.registerGroups([
