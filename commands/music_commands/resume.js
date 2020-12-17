@@ -19,7 +19,6 @@ module.exports = class ResumeMusic extends Command {
 					if (connection.dispatcher.paused) {
 						// connection returns a VoiceConnection and dispatcher returns a StreamDispatcher
 						connection.dispatcher.resume();
-						// Types: PLAYING, WATCHING, LISTENING, STREAMING,
 						setBotActivity(message, this.client);
 					}
 					else{
@@ -39,11 +38,16 @@ module.exports = class ResumeMusic extends Command {
 	}
 };
 
-// Function to read the song_file.json to get title of paused music
+// Function to read bot's activity (track playing before being paused) from mongodb and set it in discord
 function setBotActivity(message, client) {
+	// uses condition (server/guild id) to determine where to find bot data
 	const condition = { _id: message.guild.id };
+
+	// Using database Model ("Track" in this case) and not instance of the model,
+	// method searches database using condition
 	Track.find(condition)
 		.then((result) => {
+			// Types: PLAYING, WATCHING, LISTENING, STREAMING,
 			client.user.setActivity(result[0].track, { type: 'PLAYING' });
 		})
 		.catch((err) => {
