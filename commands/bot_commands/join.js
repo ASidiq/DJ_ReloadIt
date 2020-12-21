@@ -12,7 +12,7 @@ module.exports = class JoinVoiceChannel extends Command {
 	}
 
 	run(message) {
-		const voiceChannel = message.member.voice.channel
+		const voiceChannel = message.member.voice.channel;
 		// checks if member using command is in a voice channel
 		if (voiceChannel) {
 			// if the id(s) of voice channel(s) the bot is connected does not match member's
