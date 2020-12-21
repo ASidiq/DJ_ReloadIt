@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 // connect to the mongodb database. Supplied options to prevent deprecation warnings on execution
 mongoose.connect(`mongodb+srv://${dbUsername}:${dbPassword}@discord-dj-bot-db.ly5g7.mongodb.net/discord-dj-bot`,
 	{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
-	.then((result) => console.log('connected to db'))
+	.then(() => console.log('connected to db'))
 	.catch((err) => console.log(err));
 
 // create a new CommandoClient
@@ -29,6 +29,7 @@ client.registry
 	.registerGroups([
 		['music_commands', 'Music Commands'],
 		['fun_commands', 'Fun Commands'],
+		['bot_commands', 'Bot Commands'],
 	])
 	.registerDefaultGroups()
 	.registerDefaultCommands({
