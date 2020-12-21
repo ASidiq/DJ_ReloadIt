@@ -20,6 +20,6 @@
     "discord.js-commando": "github:discordjs/Commando",
     "ffmpeg-static": "^4.2.7",
     "mongoose": "^5.11.7",
-    "ytdl-core": "^4.1.6"
+    "ytdl-core": "^4.2.1"
   }
 }
