@@ -2,6 +2,7 @@ const { Command } = require('discord.js-commando');
 const ytdl = require('ytdl-core');
 // imports database model into script
 const Track = require(`${__basedir}/models/track.js`);
+const Playlist = require(`${__basedir}/models/playlist.js`);
 
 
 module.exports = class PlayMusic extends Command {
@@ -39,17 +40,8 @@ module.exports = class PlayMusic extends Command {
 			message.member.voice.channel.join()
 			// connection returns a VoiceConnection
 				.then(connection => {
-					// play method returns a StreamDispatcher
-					const dispatcher = connection.play(ytdl(song,
-						{ filter: 'audioonly', quality: 'highestaudio' }));
-					dispatcher.setVolume(0.1);
-					// request to get music info from YouTube
-					ytdl.getBasicInfo(song).then(info => {
-						// Types: PLAYING, WATCHING, LISTENING, STREAMING,
-						this.client.user.setActivity(info.videoDetails.title, { type: 'PLAYING' });
-						// saves the title of the song in a mongodb database so it can be retrieved when the song is paused and then resumed again
-						storeBotActivity(message, info.videoDetails.title);
-					});
+					// function plays song
+					songPlayer(connection, message, song, this.client);
 				});
 		}
 		else {
@@ -76,7 +68,48 @@ function storeBotActivity(message, content) {
 			console.log(err);
 		}
 		else{
-			console.log(result, '/n collection updated!');
+			// console.log(result, '/n collection updated!');
 		}
 	});
 }
+
+function songPlayer(connection, message, song, client) {
+	// '.play' method returns a StreamDispatcher
+	const dispatcher = connection.play(ytdl(song,
+		{ filter: 'audioonly', quality: 'highestaudio' }));
+	dispatcher.setVolume(0.1);
+	// request to get music info from YouTube
+	ytdl.getBasicInfo(song).then(info => {
+		// Types: PLAYING, WATCHING, LISTENING, STREAMING,
+		client.user.setActivity(info.videoDetails.title, { type: 'PLAYING' });
+		// saves the title of the song in a mongodb database so it can be retrieved when the song is paused and then resumed again
+		storeBotActivity(message, info.videoDetails.title);
+	});
+	dispatcher.on('finish', () => {
+		// When a song finishes playing 'playQueue' checks for songs queued in the database and plays it
+		playQueue(connection, message, client);
+	});
+}
+
+function playQueue(connection, message, client) {
+	const id = message.guild.id;
+	Playlist.findById(id, function(err, queue) {
+		if (err) {
+			console.log(err);
+			return;
+		}
+		else if (queue === null) {
+			return;
+		}
+		else {
+			const newSong = queue.playlist.shift();
+			if(newSong === undefined) {
+				return;
+			}
+			queue.save();
+			// plays next song in the queue from the database
+			songPlayer(connection, message, newSong, client);
+		}
+	});
+}
+
