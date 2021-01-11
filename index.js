@@ -1,6 +1,3 @@
-// global variable that is accessible throughout the project files
-global.__basedir = __dirname;
-
 // require the Commando module (using deconstruction)
 const { CommandoClient } = require('discord.js-commando');
 // require the path module

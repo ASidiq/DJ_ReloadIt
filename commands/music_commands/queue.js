@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const Playlist = require(`${__basedir}/models/playlist.js`);
+const Playlist = require('../../models/playlist.js');
 
 module.exports = class QueueMusic extends Command {
 	constructor(client) {

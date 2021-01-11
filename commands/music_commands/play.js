@@ -1,8 +1,8 @@
 const { Command } = require('discord.js-commando');
 const ytdl = require('ytdl-core');
 // imports database model into script
-const Track = require(`${__basedir}/models/track.js`);
-const Playlist = require(`${__basedir}/models/playlist.js`);
+const Track = require('../../models/track.js');
+const Playlist = require('../../models/playlist.js');
 
 
 module.exports = class PlayMusic extends Command {
