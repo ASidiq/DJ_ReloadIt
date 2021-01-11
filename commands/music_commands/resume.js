@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const Track = require(`${__basedir}/models/track.js`);
+const Track = require('../../models/track.js');
 
 module.exports = class ResumeMusic extends Command {
 	constructor(client) {
