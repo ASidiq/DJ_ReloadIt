@@ -95,15 +95,18 @@ function playQueue(connection, message, client) {
 	const id = message.guild.id;
 	Playlist.findById(id, function(err, queue) {
 		if (err) {
+			// error to do with connecting to the database not finding ID
 			console.log(err);
 			return;
 		}
 		else if (queue === null) {
+			client.user.setActivity('with Commando');
 			return;
 		}
 		else {
 			const newSong = queue.playlist.shift();
 			if(newSong === undefined) {
+				client.user.setActivity('with Commando');
 				return;
 			}
 			queue.save();

@@ -20,6 +20,7 @@ module.exports = class LeaveVoiceChannel extends Command {
 			if (this.client.voice.connections.some(conn => conn.channel.id === voiceChannel.id)) {
 				// bot leaves the voice channel the member is connected to
 				message.member.voice.channel.leave();
+				this.client.user.setActivity('with Commando');
 			}
 			else {
 				message.reply('DJ is not in the current channel');
