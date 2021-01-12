@@ -67,7 +67,6 @@ function shufflePlaylist(message) {
 			return;
 		}
 		else {
-			console.table(queue.playlist);
 			if (queue.playlist.length < 2) {
 				return;
 			}
