@@ -16,19 +16,17 @@ module.exports = class ResumeMusic extends Command {
 		if (message.member.voice.channel) {
 			message.member.voice.channel.join()
 				.then(connection => {
-					if (connection.dispatcher.paused) {
+					const activityName = this.client.user.presence.activities[0].name;
+					if (activityName === 'with Commando') {
+						message.reply('No song to resume. Play a song instead.');
+					}
+					else if (connection.dispatcher.paused) {
 						// connection returns a VoiceConnection and dispatcher returns a StreamDispatcher
 						connection.dispatcher.resume();
 						setBotActivity(message, this.client);
 					}
 					else{
-						const activityName = this.client.user.presence.activities[0].name;
-						if (activityName != 'with Commando') {
-							message.reply('Music is currently playing');
-						}
-						else{
-							message.reply('No song is paused. Play a song instead.');
-						}
+						message.reply('Music is currently playing');
 					}
 				});
 		}
