@@ -2,13 +2,22 @@
 const { CommandoClient } = require('discord.js-commando');
 // require the path module
 const path = require('path');
-// require the config file
-const { prefix, ownerID, token, dbUsername, dbPassword } = require('./config.json');
+
+// dotenv to use environment variables
+require('dotenv').config();
+
 // require mongoose package
 const mongoose = require('mongoose');
 
+
+// declaring config variables
+const uri = process.env.MONGODB_URI;
+const prefix = process.env.PREFIX;
+const ownerID = process.env.OWNERID;
+const token = process.env.TOKEN;
+
 // connect to the mongodb database. Supplied options to prevent deprecation warnings on execution
-mongoose.connect(`mongodb+srv://${dbUsername}:${dbPassword}@discord-dj-bot-db.ly5g7.mongodb.net/discord-dj-bot`,
+mongoose.connect(uri,
 	{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
 	.then(() => console.log('connected to db'))
 	.catch((err) => console.log(err));
