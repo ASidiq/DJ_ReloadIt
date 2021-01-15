@@ -58,7 +58,6 @@ module.exports = class SkipSong extends Command {
 				queue.save();
 				if (track != null && track != undefined) {
 					const playNextSong = new play(client);
-					console.log(track);
 					playNextSong.run(message, { song:track });
 				}
 			}
